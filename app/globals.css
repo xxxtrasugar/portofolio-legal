@@ -1,26 +1,476 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #0d0d0d;
+  --white: #f8f8f5;
+  --stone: #e8e6e1;
+  --taupe: #a89582;
+  --muted: #77736d;
+  --line: #d7d2ca;
+  --red: #6e182b;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Inter, sans-serif;
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.55;
+}
+.page {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+}
+.rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 0;
+  background: #fbfbf8;
+}
+.monogram {
+  writing-mode: vertical-rl;
+  font-family: "Libre Baskerville";
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+.railnav {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.railnav a {
+  writing-mode: vertical-rl;
+  text-decoration: none;
+  color: #555;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+}
+.content {
+  min-width: 0;
+}
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+}
+.copy {
+  padding: 70px 70px 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 900;
+}
+.h1 {
+  font-family: "Libre Baskerville", serif;
+  font-size: 82px;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 400;
+  max-width: 900px;
+  margin: 20px 0;
+}
+.lead {
+  font-size: 19px;
+  color: #55504a;
+  max-width: 720px;
+}
+.buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  margin-bottom: 48px;
+}
+.btn {
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: white;
+  border-radius: 0;
+  padding: 14px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn.alt {
+  background: transparent;
+  color: var(--black);
+}
+.side {
+  border-left: 1px solid var(--line);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #efede8;
+}
+.portrait {
+  height: 520px;
+  position: relative;
+  overflow: hidden;
+  background: var(--stone); /* Warna dasar jika foto belum dimuat */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%) contrast(1.1); /* Efek hitam-putih premium */
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.portrait:hover .portrait-img {
+  filter: grayscale(0%) contrast(1); /* Kembali berwarna saat disorot */
+  transform: scale(1.03); /* Sedikit efek zoom in */
+}
+.fact {
+  border-top: 1px solid var(--line);
+  padding: 22px 0;
+}
+.fact strong {
+  font-family: "Libre Baskerville";
+  font-size: 42px;
+  font-weight: 400;
+}
+.fact span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.section {
+  padding: 80px 70px;
+  border-top: 1px solid var(--line);
+}
+.section h2 {
+  font-family: "Libre Baskerville";
+  font-size: 54px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+}
+.split {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 60px;
+}
+.muted {
+  color: var(--muted);
+}
+.list {
+  border-top: 1px solid var(--line);
+}
+.row {
+  display: grid;
+  grid-template-columns: 240px 1fr 180px;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  position: relative; /* Penting agar gambar melayang tepat di baris ini */
+}
+
+/* Mengatur gaya gambar yang tersembunyi */
+.row-hover-image {
+  position: absolute;
+  right: 15%; /* Gambar akan muncul di sisi kanan */
+  top: 50%;
+  width: 280px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+  pointer-events: none; /* Agar gambar tidak menghalangi klik kursor */
+  
+  /* Logika Animasi (Tersembunyi secara default) */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%) scale(0.95);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 50;
+  filter: grayscale(100%);
+}
+
+/* Logika Animasi (Muncul saat baris di-hover) */
+.row:hover .row-hover-image {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1) rotate(2deg); /* Muncul dengan sedikit miring agar artistik */
+  filter: grayscale(0%);
+}
+.row h3 {
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+.tag {
+  color: var(--red);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-weight: 900;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  border-right: 0;
+}
+.card {
+  padding: 24px;
+  border-right: 1px solid var(--line);
+  min-height: 180px;
+}
+.card strong {
+  font-family: "Libre Baskerville";
+  font-size: 44px;
+  font-weight: 400;
+}
+.card span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.writing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-right: 0;
+}
+.paper {
+  padding: 28px;
+  border-right: 1px solid var(--line);
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.paper h3 {
+  font-family: "Libre Baskerville";
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+.contact {
+  background: var(--black);
+  color: white;
+}
+.contact .muted {
+  color: #bbb;
+}
+
+/* =======================================================
+   RESPONSIVE LAYOUT (TABLET & MOBILE)
+   ======================================================= */
+
+/* 1. Aturan untuk Tablet (Lebar layar di bawah 1024px) */
+@media (max-width: 1024px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+  .rail {
+    display: none; /* Menyembunyikan sidebar vertikal */
+  }
+  .hero,
+  .split {
+    grid-template-columns: 1fr;
+  }
+  .side {
+    border-left: 0;
+  }
+  /* Mengubah 4 kolom menjadi 2 kolom di tablet agar tidak terlalu sempit */
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    border-right: 1px solid var(--line);
+  }
+  .writing {
+    grid-template-columns: repeat(2, 1fr);
+    border-right: 1px solid var(--line);
+  }
+  .card, .paper {
+    border-bottom: 1px solid var(--line);
+  }
+  .portrait {
+    height: 420px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 2. Aturan Khusus untuk Smartphone (Lebar layar di bawah 768px) */
+@media (max-width: 768px) {
+  .h1 {
+    font-size: 42px; /* Ukuran judul Hero diperkecil agar tidak menumpuk */
+  }
+  .section h2 {
+    font-size: 32px; /* Ukuran judul Section diperkecil */
+  }
+  .lead {
+    font-size: 16px;
+  }
+  .copy,
+  .section {
+    padding: 32px 20px; /* Padding dikurangi untuk memaksimalkan ruang baca */
+  }
+  /* Mengubah 2 kolom tablet menjadi 1 kolom penuh di HP */
+  .cards,
+  .writing {
+    grid-template-columns: 1fr; 
+  }
+  .row {
+    grid-template-columns: 1fr;
+    gap: 8px; /* Jarak antar teks di list Experience dirapatkan */
+  }
+  .portrait {
+    height: 300px;
+  }
+  .fact strong {
+    font-size: 32px;
+  }
+}
+
+/* 3. Aturan untuk Layar Laptop / Desktop dengan Tinggi Terbatas */
+@media (max-height: 850px) and (min-width: 1025px) {
+  .rail {
+    padding: 15px 0; 
+  }
+  .monogram {
+    font-size: 16px; 
+    letter-spacing: 0.15em;
+  }
+  .railnav {
+    gap: 12px; 
+  }
+  .railnav a {
+    font-size: 12px;
+  }
+}
+
+/* =======================================================
+   CUSTOM SCROLLBAR & TEXT SELECTION
+   ======================================================= */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--white);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--taupe);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--red);
+}
+
+::selection {
+  background: var(--red);
+  color: var(--white);
+}
+
+/* =======================================================
+   ADVANCED HOVER EFFECTS
+   ======================================================= */
+/* 1. Efek Hover Tombol */
+.btn {
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  transform: translateY(-4px); /* Mengangkat tombol ke atas */
+  box-shadow: 0 8px 24px rgba(110, 24, 43, 0.25); /* Bayangan merah pudar */
+}
+.btn.alt {
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn.alt:hover {
+  background: transparent;
+  color: var(--red);
+  border-color: var(--red);
+  transform: translateY(-4px);
+}
+
+/* 2. Efek Hover Kartu (Statistik & Karya) */
+.card, .paper {
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+}
+.card:hover, .paper:hover {
+  background: #ffffff; /* Berubah menjadi putih bersih */
+  transform: translateY(-8px); /* Mengangkat elemen */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06); /* Bayangan sangat halus */
+  z-index: 10;
+  border-color: transparent;
+}
+
+/* =======================================================
+   MODIFIKASI KARTU KARYA & FOTO (SELECTED WORK)
+   ======================================================= */
+.paper {
+  border-right: 1px solid var(--line);
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Memastikan foto tidak keluar dari batas kartu */
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  background: var(--white);
+}
+
+/* Wadah foto */
+.paper-image-wrapper {
+  width: 100%;
+  height: 240px; /* Menyeragamkan tinggi semua foto */
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Efek Grayscale ke Berwarna */
+.paper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%); /* Hitam putih secara default */
+  transition: transform 0.8s ease, filter 0.8s ease;
+}
+
+.paper:hover .paper-image {
+  filter: grayscale(0%); /* Kembali berwarna saat disorot */
+  transform: scale(1.05); /* Efek zoom perlahan */
+}
+
+/* Wadah teks di bawah foto */
+.paper-content {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.paper h3 {
+  font-family: "Libre Baskerville";
+  font-size: 28px; /* Sedikit dikecilkan agar seimbang dengan foto */
+  font-weight: 400;
+  line-height: 1.15;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
