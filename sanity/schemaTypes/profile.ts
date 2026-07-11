@@ -54,5 +54,14 @@ export default {
     { name: 'phone', title: 'Phone Number', type: 'string' },
     { name: 'email', title: 'Email Address', type: 'string' },
     { name: 'linkedin', title: 'LinkedIn Username/URL', type: 'string' },
+    {
+      name: 'cv',
+      title: 'Curriculum Vitae (CV)',
+      type: 'file',
+      description: 'Upload file CV berformat PDF',
+      options: {
+        accept: '.pdf' // Membatasi agar hanya bisa upload PDF
+      }
+    }
   ],
 }

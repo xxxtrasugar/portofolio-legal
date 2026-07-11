@@ -4,10 +4,7 @@ import { client } from '../sanity/lib/client'
 import FadeIn from './components/FadeIn' // Memanggil komponen animasi
 
 export default async function Home() {
-  const profileData = await client.fetch(`*[_type == "profile"][0] {
-    ...,
-    "profileImageUrl": profileImage.asset->url
-  }`)
+  const profileData = await client.fetch(`*[_type == "profile"][0]{ ..., "profileImageUrl": profileImage.asset->url, "cvUrl": cv.asset->url }`)
   const experiences = await client.fetch(`*[_type == "experience"] | order(_createdAt asc) {
     _id, period, company, role, description, "imageUrl": image.asset->url
   }`)
@@ -59,7 +56,14 @@ export default async function Home() {
               <p className="lead">{p.heroDescription}</p>
               
               <div className="buttons">
-                <a href="/cv-aliya-maysandra.pdf" target="_blank" rel="noopener noreferrer" className="btn"> Download CV </a>
+                <a 
+                  href={p.cvUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn-download" // (Gunakan class CSS bawaan template Anda)
+                >
+                  Download CV
+                </a>
                 <a href="#work" className="btn alt">View Work</a>
               </div>
             </div>
