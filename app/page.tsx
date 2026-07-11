@@ -1,4 +1,5 @@
 // app/page.tsx
+export const revalidate = 10; // Website akan mengecek pembaruan data setiap 10 detik
 import { client } from '../sanity/lib/client'
 import FadeIn from './components/FadeIn' // Memanggil komponen animasi
 
