@@ -4,7 +4,31 @@ import { client } from '../sanity/lib/client'
 import FadeIn from './components/FadeIn' // Memanggil komponen animasi
 
 export default async function Home() {
-  const profileData = await client.fetch(`*[_type == "profile"][0]{ ..., "profileImageUrl": profileImage.asset->url, "cvUrl": cv.asset->url }`)
+  const profileData = await client.fetch(`
+  *[_type == "profile"][0]{
+    fullName,
+    title,
+    heroTitle,
+    heroDescription,
+    profileTitle,
+    profileDescription,
+    keywords,
+    gpa,
+    statTwo,
+    statTwoLabel,
+    statThree,
+    statThreeLabel,
+    committee,
+
+    location,
+    "phoneNumber": phone,
+    "emailAddress": email,
+    linkedin,
+
+    "profileImageUrl": profileImage.asset->url,
+    "cvUrl": cv.asset->url
+  }
+  `)
   const experiences = await client.fetch(`*[_type == "experience"] | order(_createdAt asc) {
     _id, period, company, role, description, "imageUrl": image.asset->url
   }`)
@@ -27,10 +51,15 @@ export default async function Home() {
     profileTitle: "Law as clarity, discipline, and impact.",
     profileDescription: "Aliya memandang hukum sebagai instrumen keadilan yang membumi. Mockup ini menampilkan personal brand secara elegan, minimal, dan premium — bukan menggunakan gaya kartu warm seperti Pustaka Asyfi.",
     location: "Bekasi, Indonesia",
-    phone: "+62 813-2489-1320",
-    email: "aliyamaysandra77@gmail.com",
+    phoneNumber: "+62 813-2489-1320",
+    emailAddress: "aliyamaysandra77@gmail.com",
     linkedin: "linkedin.com/in/aliya-maysandra"
   }
+
+  const linkedinUrl =
+  p.linkedin?.startsWith("http")
+    ? p.linkedin
+    : `https://${p.linkedin}`;
 
   return (
     <div className="page">
@@ -57,17 +86,17 @@ export default async function Home() {
               
               <div className="buttons">
                 {p.cvUrl && (
-                  <a 
-                    href={`${p.cvUrl}?dl=`} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+                  <a
+                    href={`${p.cvUrl}?dl=`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn"
                   >
                     Download CV
                   </a>
                 )}
-                {/* Tambahkan kembali tombol View Work di bawah ini */}
-                <a href="#work" className="border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors">
+
+                <a href="#work" className="btn alt">
                   View Work
                 </a>
               </div>
@@ -171,24 +200,38 @@ export default async function Home() {
             </div>
             <p className="muted">
               {p.location}<br />
-              <a 
-                href={`https://wa.me/${p.phoneNumber?.replace(/\D/g, '')}`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block hover:underline"
+              
+              {p.phoneNumber && (
+                <>
+                  <a 
+                    href={`https://wa.me/${p.phoneNumber.replace(/\D/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ color: 'inherit', textDecoration: 'none' }}
+                  >
+                    {p.phoneNumber}
+                  </a><br />
+                </>
+              )}
+              
+              {p.emailAddress && (
+                <>
+                  <a 
+                    href={`mailto:${p.emailAddress}`}
+                    style={{ color: 'inherit', textDecoration: 'none' }}
+                  >
+                    {p.emailAddress}
+                  </a><br />
+                </>
+              )}
+              
+              <a
+                  href={linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
               >
-                {p.phoneNumber}
-              </a>
-              <a href={`mailto:${p.emailAddress}`} className="block hover:underline">
-                {p.emailAddress}
-              </a>
-              <a 
-                href={p.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block hover:underline"
-              >
-                {p.linkedin}
+                  {p.linkedin}
               </a>
             </p>
           </div>
