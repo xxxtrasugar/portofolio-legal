@@ -56,15 +56,20 @@ export default async function Home() {
               <p className="lead">{p.heroDescription}</p>
               
               <div className="buttons">
-                <a 
-                  href={p.cvUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn-download" // (Gunakan class CSS bawaan template Anda)
-                >
-                  Download CV
+                {p.cvUrl && (
+                  <a 
+                    href={`${p.cvUrl}?dl=`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+                  >
+                    Download CV
+                  </a>
+                )}
+                {/* Tambahkan kembali tombol View Work di bawah ini */}
+                <a href="#work" className="border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors">
+                  View Work
                 </a>
-                <a href="#work" className="btn alt">View Work</a>
               </div>
             </div>
             
@@ -166,9 +171,25 @@ export default async function Home() {
             </div>
             <p className="muted">
               {p.location}<br />
-              {p.phone}<br />
-              {p.email}<br />
-              {p.linkedin}
+              <a 
+                href={`https://wa.me/${p.phoneNumber?.replace(/\D/g, '')}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block hover:underline"
+              >
+                {p.phoneNumber}
+              </a>
+              <a href={`mailto:${p.emailAddress}`} className="block hover:underline">
+                {p.emailAddress}
+              </a>
+              <a 
+                href={p.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block hover:underline"
+              >
+                {p.linkedin}
+              </a>
             </p>
           </div>
         </FadeIn>
